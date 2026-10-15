@@ -1,0 +1,170 @@
+{
+  "chaines": {
+    "CUS->RS": {
+      "mode": "platt2",
+      "a_score": 0.7276560482946837,
+      "a_ratio": 4.712815651975097,
+      "b": -4.1126216307369114,
+      "n_exemples": 1053,
+      "n_positifs": 312,
+      "auc_validation_croisee": 0.7599,
+      "auc_apprentissage": 0.7916,
+      "fiabilite": [
+        {
+          "tranche": "0.0-0.2",
+          "couples": 53,
+          "vrais_liens": 12,
+          "taux_observe": 0.2264
+        },
+        {
+          "tranche": "0.2-0.4",
+          "couples": 474,
+          "vrais_liens": 62,
+          "taux_observe": 0.1308
+        },
+        {
+          "tranche": "0.4-0.5",
+          "couples": 87,
+          "vrais_liens": 21,
+          "taux_observe": 0.2414
+        },
+        {
+          "tranche": "0.5-0.6",
+          "couples": 104,
+          "vrais_liens": 19,
+          "taux_observe": 0.1827
+        },
+        {
+          "tranche": "0.6-0.7",
+          "couples": 100,
+          "vrais_liens": 25,
+          "taux_observe": 0.25
+        },
+        {
+          "tranche": "0.7-0.8",
+          "couples": 235,
+          "vrais_liens": 173,
+          "taux_observe": 0.7362
+        }
+      ]
+    },
+    "RS->AD": {
+      "mode": "platt2",
+      "a_score": 1.79399308327389,
+      "a_ratio": 2.1548523305127416,
+      "b": -2.81479282695145,
+      "n_exemples": 1543,
+      "n_positifs": 383,
+      "auc_validation_croisee": 0.6851,
+      "auc_apprentissage": 0.6917,
+      "fiabilite": [
+        {
+          "tranche": "0.0-0.2",
+          "couples": 3,
+          "vrais_liens": 3,
+          "taux_observe": 1.0
+        },
+        {
+          "tranche": "0.2-0.4",
+          "couples": 538,
+          "vrais_liens": 83,
+          "taux_observe": 0.1543
+        },
+        {
+          "tranche": "0.4-0.5",
+          "couples": 300,
+          "vrais_liens": 49,
+          "taux_observe": 0.1633
+        },
+        {
+          "tranche": "0.5-0.6",
+          "couples": 401,
+          "vrais_liens": 61,
+          "taux_observe": 0.1521
+        },
+        {
+          "tranche": "0.6-0.7",
+          "couples": 224,
+          "vrais_liens": 115,
+          "taux_observe": 0.5134
+        },
+        {
+          "tranche": "0.7-0.8",
+          "couples": 77,
+          "vrais_liens": 72,
+          "taux_observe": 0.9351
+        }
+      ]
+    },
+    "AD->TPS": {
+      "mode": "platt2",
+      "a_score": 2.978113089362993,
+      "a_ratio": 7.677419344028147,
+      "b": -8.261652663890771,
+      "n_exemples": 2000,
+      "n_positifs": 434,
+      "auc_validation_croisee": 0.9288,
+      "auc_apprentissage": 0.93,
+      "fiabilite": [
+        {
+          "tranche": "0.0-0.2",
+          "couples": 1146,
+          "vrais_liens": 29,
+          "taux_observe": 0.0253
+        },
+        {
+          "tranche": "0.2-0.4",
+          "couples": 204,
+          "vrais_liens": 12,
+          "taux_observe": 0.0588
+        },
+        {
+          "tranche": "0.4-0.5",
+          "couples": 42,
+          "vrais_liens": 6,
+          "taux_observe": 0.1429
+        },
+        {
+          "tranche": "0.5-0.6",
+          "couples": 48,
+          "vrais_liens": 1,
+          "taux_observe": 0.0208
+        },
+        {
+          "tranche": "0.6-0.7",
+          "couples": 49,
+          "vrais_liens": 4,
+          "taux_observe": 0.0816
+        },
+        {
+          "tranche": "0.7-0.8",
+          "couples": 81,
+          "vrais_liens": 14,
+          "taux_observe": 0.1728
+        },
+        {
+          "tranche": "0.8-0.9",
+          "couples": 413,
+          "vrais_liens": 352,
+          "taux_observe": 0.8523
+        },
+        {
+          "tranche": "0.9-1.0",
+          "couples": 17,
+          "vrais_liens": 16,
+          "taux_observe": 0.9412
+        }
+      ]
+    },
+    "TPS->EL": {
+      "mode": "rejetee",
+      "motif": "le score de similarite n'est pas predictif des liens existants sur cette chaine (coefficients negatifs) : chaine non semantique ou liens de nature differente",
+      "a_score": -4.551564851523509,
+      "a_ratio": -10.27752040135175,
+      "n_exemples": 1949,
+      "n_positifs": 585,
+      "auc_validation_croisee": 0.9379,
+      "fiabilite": []
+    }
+  }
+}

@@ -1,0 +1,98 @@
+# ---------------------------------------------------------------------------
+# Auditeur de tracabilite et de couverture -- configuration de reference
+# Tout est parametrable ici : aucune regle projet n'est codee en dur.
+# ---------------------------------------------------------------------------
+
+# Niveaux de referentiel. `detect` = motifs cherches dans le nom de module
+# DOORS (ModuleRich/Name) puis, a defaut, dans le nom de fichier.
+levels:
+  - id: CUS
+    label: Specification client
+    detect: ["\\.CUS$", "\\.CUS\\b"]
+  - id: RS
+    label: Requirement Specification (RSL0 / systeme)
+    detect: ["\\.RS$", "\\.RS\\b"]
+  - id: AD
+    label: Architecture Description (RSL1)
+    detect: ["\\.AD$", "\\.AD\\b"]
+  - id: TPS
+    label: Technical Purchase Specification (sous-systeme)
+    detect: ["\\.RSTPS$", "\\.TPS$", "\\.RSTPS\\b", "\\.TPS\\b"]
+  - id: EL
+    label: Evidence List (verification)
+    detect: ["\\.EL$", "\\.EL\\b"]
+
+# Chaines de tracabilite auditees (amont -> aval).
+chains:
+  - {from: CUS, to: RS}
+  - {from: RS,  to: AD}
+  - {from: AD,  to: TPS}
+  - {from: TPS, to: EL}
+
+# Mapping des colonnes de l'onglet ViewRich. Premiere colonne trouvee gagne.
+columns:
+  id:        ["ID"]
+  text:      ["Object Heading and Object Text", "Object Text", "Object Heading"]
+  obj_type:  ["ObjectType", "Object Type"]
+  number:    ["Object Number", "Object Level"]
+  links:     ["~ObjectLinks"]
+  parents:   ["ParentRequirements", "Source Texte Parent Requirement", "SatisfiedRequirements"]
+  children:  ["ChildRequirements"]
+  allocated: ["AllocatedTo"]
+  scope:     ["Scope"]
+  rationale: ["Rationale"]
+  alloc_status: ["AllocationStatus"]
+  demo:      ["PlannedDemonstration", "ExpectedDemonstration"]
+
+# Types d'objets a considerer comme exigences a couvrir.
+requirement_types: ["Technical Req", "Requirement", "Contractual Req", "Process Req"]
+# Types ignores (titres, informatif) : tracabilite non exigee mais contexte utile.
+context_types: ["Heading", "Information", "Note", "Figure", "Table"]
+
+matching:
+  topk: 5                 # candidats conserves par exigence amont
+  retrieval:              # ponderation du vivier de candidats (mesuree sur PKP)
+    emb: 0.5
+    tfidf: 0.5
+  candidate_pool: 40      # candidats pre-selectionnes avant scoring fin
+  min_text_chars: 25      # exigences plus courtes = traitees mais signalees
+  weights:                # fusion lineaire, remplacee par `calibrate` si dispo
+    emb: 0.25
+    emb_rel: 0.20
+    tfidf: 0.15
+    tfidf_rel: 0.15
+    fuzzy: 0.10
+    numeric: 0.08
+    section: 0.04
+    standard: 0.03
+  thresholds:
+    propose: 0.65         # >= : lien propose
+    weak: 0.45            # >= : lien a verifier ; < : ecart
+  # Les seuils dependent de l'echelle de confiance de chaque chaine : se fier
+  # a la table de fiabilite produite par `calibrate` (onglet Fiabilite).
+  thresholds_per_chain:
+    "AD->TPS": {propose: 0.80, weak: 0.60}
+  # Mots vides metier ajoutes aux stopwords anglais.
+  domain_stopwords: ["shall", "must", "should", "train", "vehicle", "system",
+                     "requirement", "document", "project", "alstom", "pkp"]
+
+ollama:
+  host: "http://127.0.0.1:11434"
+  embed_model: "nomic-embed-text:latest"
+  judge_model: "qwen2.5-coder:14b"
+  timeout_s: 180
+  judge_budget: 150       # nb max d'appels LLM par audit (maitrise du temps)
+  judge_topk: 3           # candidats soumis au juge (prompt court = plus rapide)
+  num_ctx: 8192
+  num_predict: 700        # plafond de generation : borne le temps par appel
+  temperature: 0.0
+  # Ciblage des appels : le juge ne sert a rien sur un lien deja valide et
+  # confirme. On le reserve aux decisions a prendre.
+  #   all       : toutes les exigences amont
+  #   targeted  : propositions, liens douteux et couvertures incertaines
+  #   gaps      : uniquement les ecarts et propositions (sans les liens existants)
+  judge_policy: targeted
+
+report:
+  out_dir: "out"
+  max_text_chars: 1200

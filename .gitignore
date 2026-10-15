@@ -1,0 +1,22 @@
+# --- Donnees projet : NE JAMAIS publier (extractions DOORS confidentielles) ---
+*.xlsx
+*.xlsm
+*.xls
+*.csv
+*.rtf
+*.doc*
+*.pdf
+
+# --- Sorties et caches : contiennent du texte d'exigences en clair ---
+rtm-auditor/out/
+rtm-auditor/.cache/
+out/
+.cache/
+
+# --- Environnement et artefacts ---
+.venv/
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.DS_Store
